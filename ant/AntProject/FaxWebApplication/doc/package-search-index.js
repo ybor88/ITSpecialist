@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"faxapp.dao"},{"l":"faxapp.entity"},{"l":"faxapp.util"},{"l":"faxapp.web"}];updateSearchResults();
