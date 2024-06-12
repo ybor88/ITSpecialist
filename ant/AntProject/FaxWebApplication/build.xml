@@ -1,59 +1,70 @@
 <?xml version="1.0"?>
 <project name="fax" basedir="." default="build">
-   <property name="src.dir" value="src"/>
-   <property name="web.dir" value="war"/>
-   <property name="build.dir" value="${web.dir}/WEB-INF/classes"/>
-   <property name="name" value="fax"/>
-   
-   <path id="master-classpath">
-      <fileset dir="${web.dir}/WEB-INF/lib">
-         <include name="*.jar"/>
-      </fileset>
-      <pathelement path="${build.dir}"/>
-   </path>
 
-   <target name="build" description="Compile source tree java files">
-      <mkdir dir="${build.dir}"/>
-      <javac destdir="${build.dir}" source="1.8" target="1.8" includeantruntime="false">
-         <src path="${src.dir}"/>
-         <classpath refid="master-classpath"/>
-      </javac>
-   </target>
+    <property name="src.dir" value="src"/>
+    <property name="web.dir" value="war"/>
+    <property name="build.dir" value="${web.dir}/WEB-INF/classes"/>
+    <property name="name" value="fax"/>
    
-   <target name="clean" description="Clean output directories">
-      <delete>
-         <fileset dir="${build.dir}">
-            <include name="**/*.class"/>
-         </fileset>
-      </delete>
-   </target>
+    <path id="master-classpath">
+        <fileset dir="${web.dir}/WEB-INF/lib">
+            <include name="*.jar"/>
+        </fileset>
+        <pathelement path="${build.dir}"/>
+    </path>
+
+    <target name="build" description="Compile source tree java files">
+        <mkdir dir="${build.dir}"/>
+        <javac destdir="${build.dir}" source="1.8" target="1.8" includeantruntime="false">
+            <src path="${src.dir}"/>
+            <classpath refid="master-classpath"/>
+        </javac>
+    </target>
    
-   <target name="generate-javadoc">
-      <javadoc packagenames="faxapp.*" sourcepath="${src.dir}.*"
-         destdir="doc" version="true" windowtitle="Fax Application">
-         <doctitle><![CDATA[= Fax Application =]]></doctitle>
-         <bottom>
-            <![CDATA[Copyright © 2011. All Rights Reserved.]]>
-         </bottom>
-         <group title="util packages" packages="faxapp.util.*"/>
-         <group title="web packages" packages="faxapp.web.*"/>
-         <group title="data packages" packages="faxapp.entity.*:faxapp.dao.*"/>
-         <fileset dir="${src.dir}">
-            <include name="**/*.java"/>
-         </fileset>
-      </javadoc>
-      <echo message="Java doc has been generated!" />
-   </target>
+    <target name="clean" description="Clean output directories">
+        <delete>
+            <fileset dir="${build.dir}">
+                <include name="**/*.class"/>
+            </fileset>
+        </delete>
+    </target>
    
-   <target name="build-jar">
-      <jar destfile="${web.dir}/lib/util.jar"
-         basedir="${build.dir}"
-         includes="faxapp/util/**"
-         excludes="**/Test.class">
-         <manifest>
-            <attribute name="Main-Class" value="com.tutorialspoint.util.FaxUtil"/>
-         </manifest>
-      </jar>
-   </target>
+    <target name="generate-javadoc">
+        <javadoc packagenames="faxapp.*" sourcepath="${src.dir}.*"
+            destdir="doc" version="true" windowtitle="Fax Application">
+            <doctitle><![CDATA[= Fax Application =]]></doctitle>
+            <bottom>
+                <![CDATA[Copyright © 2011. All Rights Reserved.]]>
+            </bottom>
+            <group title="util packages" packages="faxapp.util.*"/>
+            <group title="web packages" packages="faxapp.web.*"/>
+            <group title="data packages" packages="faxapp.entity.*:faxapp.dao.*"/>
+            <fileset dir="${src.dir}">
+                <include name="**/*.java"/>
+            </fileset>
+        </javadoc>
+        <echo message="Java doc has been generated!" />
+    </target>
    
+    <target name="build-jar" depends="build">
+        <jar destfile="${web.dir}/lib/util.jar"
+            basedir="${build.dir}"
+            includes="faxapp/util/**"
+            excludes="**/Test.class">
+            <manifest>
+                <attribute name="Main-Class" value="com.tutorialspoint.util.FaxUtil"/>
+            </manifest>
+        </jar>
+    </target>
+   
+    <target name="build-war">
+        <mkdir dir="dist"/>
+        <war destfile="dist/fax.war" webxml="${web.dir}/web.xml">
+            <fileset dir="${web.dir}/WebContent">
+                <include name="**/*.*"/>
+            </fileset>
+            <classes dir="${build.dir}"/>
+        </war>
+    </target>
+
 </project>
